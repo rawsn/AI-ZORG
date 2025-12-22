@@ -1,54 +1,36 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zorgassist AI – Vind de juiste zorg</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f7fbff; padding: 2rem; color: #222; }
-    h1 { color: #0066cc; }
-    #flow { background: #fff; padding: 1.5rem; border-radius: 8px; max-width: 600px; margin-top: 20px; }
-    button { margin: .3rem; padding: .5rem 1rem; border: none; background: #007bff; color: white; border-radius: 4px; }
-    button:hover { background: #0056b3; }
-  </style>
+<meta charset="UTF-8">
+<title>Zorgassist AI – Zorgnavigator</title>
+<style>
+body{font-family:Arial;background:#f5f8fc;margin:2em;}
+button{margin:4px;padding:8px 16px;}
+</style>
 </head>
 <body>
-  <h1>Zorgassist AI</h1>
-  <p>Beantwoord stap voor stap de vragen en ontdek wat de juiste zorgroute is.</p>
-  <div id="flow"></div>
-
-  <script>
-    let antwoorden = {};
-    const klacht = prompt("Welke klacht wilt u bespreken? (bijv. hoofdpijn, keelpijn, griep)");
-
-    async function laadVolgendeVraag() {
-      const res = await fetch("/api/triageflow", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ klacht, antwoorden })
-      });
-      const data = await res.json();
-      const flow = document.getElementById("flow");
-      flow.innerHTML = "";
-
-      if (data.type === "vraag") {
-        const p = document.createElement("p");
-        p.textContent = data.vraag;
-        flow.appendChild(p);
-        ["ja", "nee"].forEach(a => {
-          const b = document.createElement("button");
-          b.textContent = a;
-          b.onclick = () => { antwoorden[data.vraagId] = a; laadVolgendeVraag(); };
-          flow.appendChild(b);
-        });
-      } else if (data.type === "advies") {
-        flow.innerHTML = `<strong>Advies:</strong> ${data.message}`;
-      } else {
-        flow.innerHTML = `<strong>Fout:</strong> ${data.message}`;
-      }
-    }
-
-    laadVolgendeVraag();
-  </script>
+<h2>🩺 Zorgassist AI</h2>
+<div id="app"></div>
+<script>
+let antwoorden={},klacht="",postcode="";
+async function start(){
+  klacht=prompt("Wat is uw klacht?");
+  postcode=prompt("Wat is uw postcode?");
+  const res=await fetch("/api/route",{method:"POST",
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({klacht,antwoorden,postcode})});
+  const data=await res.json();render(data);
+}
+function render(d){
+  const app=document.getElementById("app");
+  if(d.vraag){app.innerHTML=`<p>${d.vraag}</p>
+  <button onclick="antwoord('${d.vraagId}','ja')">Ja</button>
+  <button onclick="antwoord('${d.vraagId}','nee')">Nee</button>`;return;}
+  app.innerHTML=`<h3>${d.advies}</h3>
+  <pre>${JSON.stringify(d,null,2)}</pre>`;
+}
+async function antwoord(id,val){antwoorden[id]=val;start();}
+start();
+</script>
 </body>
 </html>
