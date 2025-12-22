@@ -26,3 +26,4 @@ app.post("/api/route", async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Zorgassist AI draait op poort ${PORT}`));
+
