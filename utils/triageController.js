@@ -1,3 +1,4 @@
+// utils/triageController.js
 import fs from "fs";
 import path from "path";
 import { fetchThuisarts, fetchRIVM } from "./dataFetcher.js";
@@ -32,7 +33,7 @@ export async function getNextStep(klacht, antwoorden) {
 
   const nextQ = protocol.vragen[current];
   if (!nextQ) {
-    return { type: "error", message: "Onvolledig protocol of fout." };
+    return { type: "error", message: "Onvolledig protocol of fout in data." };
   }
 
   return {
