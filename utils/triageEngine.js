@@ -1,38 +1,35 @@
-import nhg from "../data/nhg_rules.json" assert { type: "json" };
-import nts from "../data/nts_rules.json" assert { type: "json" };
-import thuisarts from "../data/thuisarts_links.json" assert { type: "json" };
-import rivm from "../data/rivm_public.json" assert { type: "json" };
+// utils/triageEngine.js
 
-export function triageEngine(complaint) {
-  const text = complaint.toLowerCase();
+export async function triageEngine(answers) {
+  const klacht = (answers.klacht || "").toLowerCase().trim();
+  const postcode = answers.postcode || "";
 
-  for (const rule of nts.spoed) {
-    if (text.includes(rule.keyword))
-      return { urgency: "U1", type: "seh", advice: rule.advice };
+  // 🧠 Basisbeslislogica op klacht
+  if (!klacht) {
+    return "Geen klacht ingevoerd. Vul een klacht in om advies te krijgen.";
   }
 
-  for (const rule of nhg.huisarts) {
-    if (text.includes(rule.keyword))
-      return { urgency: "U3", type: "huisarts", advice: rule.advice };
+  // Simpele logica op basis van sleutelwoorden
+  if (klacht.includes("borst") || klacht.includes("benauwd")) {
+    return "🚨 Spoed: Bel direct 112 of ga naar de dichtstbijzijnde SEH.";
   }
 
-  for (const rule of rivm.public) {
-    if (text.includes(rule.keyword))
-      return { urgency: "Publiek", type: "ggd", advice: rule.advice };
+  if (klacht.includes("koorts") || klacht.includes("griep")) {
+    return "Neem contact op met uw huisarts binnen 24 uur.";
   }
 
-  for (const rule of thuisarts.links) {
-    if (text.includes(rule.keyword))
-      return {
-        urgency: "U5",
-        type: "zelfzorg",
-        advice: `Zelfzorgadvies: ${rule.url}`
-      };
+  if (klacht.includes("hoofdpijn")) {
+    return "Zelfzorg: neem rust, drink voldoende water en gebruik eventueel paracetamol.";
   }
 
-  return {
-    urgency: "U5",
-    type: "zelfzorg",
-    advice: "Geen spoed. Raadpleeg Thuisarts.nl bij twijfel."
-  };
+  if (klacht.includes("wond") || klacht.includes("bloeding")) {
+    return "Bel de huisartsenpost voor beoordeling van de wond.";
+  }
+
+  if (klacht.includes("buikpijn") || klacht.includes("misselijk")) {
+    return "Observeer de klachten. Als het langer dan 24 uur aanhoudt of erger wordt, neem contact op met uw huisarts.";
+  }
+
+  // Standaard advies
+  return "Neem contact op met uw huisarts voor overleg over uw klacht.";
 }
