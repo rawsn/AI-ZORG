@@ -14,6 +14,4 @@ app.post("/api/triage", async (req, res) => {
   res.json({ result, providers });
 });
 
-app.listen(3000, () =>
-  console.log("Zorgassist AI draait op http://localhost:3000")
-);
+export default app;
