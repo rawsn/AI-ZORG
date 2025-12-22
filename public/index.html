@@ -1,92 +1,50 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zorgassist AI</title>
+  <meta charset="UTF-8">
+  <title>Zorgassist AI – Vind de juiste zorg</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f8fa;
-      color: #222;
-      padding: 30px;
-      max-width: 700px;
-      margin: auto;
-    }
-    h1 {
-      color: #0066cc;
-    }
-    textarea, input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      margin-bottom: 10px;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #e9f5ff;
-      border-radius: 5px;
-      min-height: 50px;
-    }
+    body { font-family: sans-serif; background: #f7fbff; padding: 2rem; }
+    #flow { background: white; padding: 1.5rem; border-radius: 8px; max-width: 600px; }
+    button { margin: .3rem; padding: .5rem 1rem; border: none; background: #007bff; color: white; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <h1>Vind de juiste zorg</h1>
-  <form id="zorgForm">
-    <label for="klacht">Wat is uw klacht?</label>
-    <textarea id="klacht" rows="3" placeholder="Bijv. hoofdpijn, koorts, pijn op de borst..."></textarea>
-
-    <label for="postcode">Uw postcode</label>
-    <input id="postcode" placeholder="Bijv. 1234 AB" />
-
-    <button type="submit">Verstuur</button>
-  </form>
-
-  <div id="result"></div>
+  <h2>Vind de juiste zorg</h2>
+  <div id="flow"></div>
 
   <script>
-    document.getElementById("zorgForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const klacht = document.getElementById("klacht").value.trim();
-      const postcode = document.getElementById("postcode").value.trim();
+    let antwoorden = {};
+    const klacht = prompt("Welke klacht wilt u bespreken? (bijv. hoofdpijn, keelpijn)");
 
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "Bezig met analyseren... ⏳";
+    async function laadVolgendeVraag() {
+      const res = await fetch("/api/triageflow", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ klacht, antwoorden })
+      });
+      const data = await res.json();
+      const flow = document.getElementById("flow");
+      flow.innerHTML = "";
 
-      try {
-        const response = await fetch("/api/triage", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ klacht, postcode })
+      if (data.type === "vraag") {
+        const p = document.createElement("p");
+        p.textContent = data.vraag;
+        flow.appendChild(p);
+        ["ja", "nee"].forEach(a => {
+          const b = document.createElement("button");
+          b.textContent = a;
+          b.onclick = () => { antwoorden[data.vraagId] = a; laadVolgendeVraag(); };
+          flow.appendChild(b);
         });
-
-        const data = await response.json();
-
-        if (data.success) {
-          resultDiv.innerHTML = `<strong>Advies:</strong> ${data.result}`;
-        } else {
-          resultDiv.innerHTML = `<strong>Fout:</strong> ${data.error || "Onbekende fout"}`;
-        }
-      } catch (err) {
-        console.error(err);
-        resultDiv.innerHTML = "Er is iets misgegaan met de verbinding ❌.";
+      } else if (data.type === "advies") {
+        flow.innerHTML = `<strong>Advies:</strong> ${data.message}`;
+      } else {
+        flow.innerHTML = `<strong>Fout:</strong> ${data.message}`;
       }
-    });
+    }
+
+    laadVolgendeVraag();
   </script>
 </body>
 </html>
