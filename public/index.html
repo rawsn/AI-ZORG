@@ -2,35 +2,21 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Zorgassist AI – Zorgnavigator</title>
-<style>
-body{font-family:Arial;background:#f5f8fc;margin:2em;}
-button{margin:4px;padding:8px 16px;}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zorgassist AI – Vind de juiste zorg</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h2>🩺 Zorgassist AI</h2>
-<div id="app"></div>
-<script>
-let antwoorden={},klacht="",postcode="";
-async function start(){
-  klacht=prompt("Wat is uw klacht?");
-  postcode=prompt("Wat is uw postcode?");
-  const res=await fetch("/api/route",{method:"POST",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({klacht,antwoorden,postcode})});
-  const data=await res.json();render(data);
-}
-function render(d){
-  const app=document.getElementById("app");
-  if(d.vraag){app.innerHTML=`<p>${d.vraag}</p>
-  <button onclick="antwoord('${d.vraagId}','ja')">Ja</button>
-  <button onclick="antwoord('${d.vraagId}','nee')">Nee</button>`;return;}
-  app.innerHTML=`<h3>${d.advies}</h3>
-  <pre>${JSON.stringify(d,null,2)}</pre>`;
-}
-async function antwoord(id,val){antwoorden[id]=val;start();}
-start();
-</script>
+  <div class="app-container">
+    <h1>🩺 Zorgassist AI</h1>
+    <div id="chat"></div>
+    <div id="input-area">
+      <textarea id="user-input" placeholder="Beschrijf kort uw klacht..." rows="2"></textarea>
+      <input type="text" id="postcode" placeholder="Uw postcode (bijv. 3511AB)">
+      <button id="start-btn">Start</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
