@@ -3,7 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
-import { triageEngine } from "./utils/triageEngine.js";
+import { getNextStep } from "./utils/triageController.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -21,22 +21,4 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Gezondheidstest van de server
-app.get("/api/status", (req, res) => {
-  res.json({ status: "Zorgassist AI backend online ✅" });
-});
-
-// De triage route
-app.post("/api/triage", async (req, res) => {
-  try {
-    const answers = req.body;
-    const result = await triageEngine(answers);
-    res.json({ success: true, result });
-  } catch (err) {
-    console.error("Triage error:", err);
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// Export voor Vercel
-export default app;
+//
