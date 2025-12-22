@@ -1,31 +1,28 @@
 import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-import { runRouting } from "./utils/triageEngine.js";
-import { getZorgToegang } from "./utils/routingEngine.js";
-import { checkMeldplicht } from "./utils/meldplichtCheck.js";
-import { bepaalZorgstructuur } from "./utils/zorgStructuurEngine.js";
-import { zoekZorgaanbieders } from "./utils/zorgLocaties.js";
-import { getLegalInfo } from "./utils/legalCheck.js";
+import bodyParser from "body-parser";
+import { triageFlow } from "./triageEngine.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const app = express();
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(bodyParser.json());
+app.use(express.static("public"));
 
 app.post("/api/route", async (req, res) => {
-  const { klacht, antwoorden, postcode } = req.body;
-  const result = await runRouting(klacht, antwoorden);
-  const toegang = getZorgToegang(result.route);
-  const meldplicht = checkMeldplicht(klacht);
-  const structuur = bepaalZorgstructuur(result.route);
-  const locaties = postcode ? await zoekZorgaanbieders(postcode, toegang.route) : [];
-  const legal = getLegalInfo();
-  res.json({ ...result, toegang, meldplicht, structuur, locaties, legal });
+  try {
+    const { klacht, antwoorden, postcode } = req.body;
+    const result = await triageFlow(klacht, antwoorden);
+    res.json({
+      ...result,
+      legal: {
+        doel: "Zorgassist AI biedt alleen zorgnavigatie en geen medische adviezen.",
+        privacy: "Alle gegevens zijn anoniem en voldoen aan de AVG.",
+        bron: result.bron || ["NHG", "NTS", "RIVM", "Thuisarts", "KNMG"]
+      }
+    });
+  } catch (err) {
+    console.error("Fout in triage:", err);
+    res.status(500).json({ fout: "Er ging iets mis in de triage." });
+  }
 });
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
-
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Zorgassist AI draait op poort ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Zorgassist AI draait op poort ${PORT}`));
