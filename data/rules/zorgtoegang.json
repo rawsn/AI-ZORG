@@ -1,0 +1,6 @@
+{
+  "huisarts": { "route": "huisarts", "verwijzing": false },
+  "spoedeisende hulp": { "route": "SEH", "verwijzing": false },
+  "GGD": { "route": "GGD", "verwijzing": false },
+  "zelfzorg": { "route": "thuis", "verwijzing": false }
+}
