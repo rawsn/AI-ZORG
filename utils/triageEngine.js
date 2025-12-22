@@ -1,35 +1,17 @@
-// utils/triageEngine.js
-
-export async function triageEngine(answers) {
-  const klacht = (answers.klacht || "").toLowerCase().trim();
-  const postcode = answers.postcode || "";
-
-  // 🧠 Basisbeslislogica op klacht
-  if (!klacht) {
-    return "Geen klacht ingevoerd. Vul een klacht in om advies te krijgen.";
+export async function runRouting(klacht, antwoorden) {
+  const vraag = "Is er sprake van spoed (benauwdheid, hevige pijn, bewustzijnsverlies)?";
+  if (!antwoorden.spoed) {
+    return { vraagId: "spoed", vraag };
   }
-
-  // Simpele logica op basis van sleutelwoorden
-  if (klacht.includes("borst") || klacht.includes("benauwd")) {
-    return "🚨 Spoed: Bel direct 112 of ga naar de dichtstbijzijnde SEH.";
+  if (antwoorden.spoed === "ja") {
+    return { advies: "Bel direct 112", route: "spoedeisende hulp", urgentie: "U1" };
   }
-
-  if (klacht.includes("koorts") || klacht.includes("griep")) {
-    return "Neem contact op met uw huisarts binnen 24 uur.";
+  const duur = antwoorden.duur;
+  if (!duur) {
+    return { vraagId: "duur", vraag: "Heeft u de klacht langer dan 3 dagen?" };
   }
-
-  if (klacht.includes("hoofdpijn")) {
-    return "Zelfzorg: neem rust, drink voldoende water en gebruik eventueel paracetamol.";
+  if (duur === "ja") {
+    return { advies: "Neem contact op met uw huisarts", route: "huisarts", urgentie: "U3" };
   }
-
-  if (klacht.includes("wond") || klacht.includes("bloeding")) {
-    return "Bel de huisartsenpost voor beoordeling van de wond.";
-  }
-
-  if (klacht.includes("buikpijn") || klacht.includes("misselijk")) {
-    return "Observeer de klachten. Als het langer dan 24 uur aanhoudt of erger wordt, neem contact op met uw huisarts.";
-  }
-
-  // Standaard advies
-  return "Neem contact op met uw huisarts voor overleg over uw klacht.";
+  return { advies: "Zelfzorg is voldoende, raadpleeg Thuisarts.nl", route: "zelfzorg", urgentie: "U5" };
 }
