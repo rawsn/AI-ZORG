@@ -1,0 +1,55 @@
+{
+  "klacht": "koorts",
+  "vragen": [
+    {
+      "id": "v1",
+      "tekst": "Heeft u moeite met ademhalen of bent u erg benauwd?",
+      "ja": "u1",
+      "nee": "v2"
+    },
+    {
+      "id": "v2",
+      "tekst": "Heeft u langer dan 5 dagen koorts?",
+      "ja": "u3",
+      "nee": "v3"
+    },
+    {
+      "id": "v3",
+      "tekst": "Bent u ouder dan 75 jaar of heeft u een chronische ziekte (zoals COPD, hartfalen, diabetes)?",
+      "ja": "u3",
+      "nee": "v4"
+    },
+    {
+      "id": "v4",
+      "tekst": "Is de temperatuur boven de 39,5°C?",
+      "ja": "u4",
+      "nee": "zelfzorg"
+    }
+  ],
+  "uitkomsten": {
+    "u1": {
+      "advies": "Bel direct 112",
+      "route": "spoedeisende hulp (SEH)",
+      "urgentie": "U1",
+      "bron": ["NTS", "NHG", "RIVM"]
+    },
+    "u3": {
+      "advies": "Neem contact op met uw huisarts binnen 24 uur",
+      "route": "huisarts",
+      "urgentie": "U3",
+      "bron": ["NHG", "NTS"]
+    },
+    "u4": {
+      "advies": "Bel de huisartsenpost voor overleg vandaag nog",
+      "route": "huisartsenpost",
+      "urgentie": "U2",
+      "bron": ["NTS"]
+    },
+    "zelfzorg": {
+      "advies": "U kunt deze klacht meestal zelf verzorgen. Kijk op Thuisarts.nl voor tips over koorts.",
+      "route": "zelfzorg",
+      "urgentie": "U5",
+      "bron": ["Thuisarts", "RIVM"]
+    }
+  }
+}
