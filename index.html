@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zorgassist AI</title>
+    <style>
+      body { font-family: Arial; max-width: 700px; margin: 2rem auto; }
+      textarea { width: 100%; height: 100px; margin-bottom: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Vind de juiste zorg</h1>
+    <form id="triageForm">
+      <textarea id="complaint" placeholder="Beschrijf kort je klacht..."></textarea>
+      <input type="text" id="postcode" placeholder="Postcode" /><br/>
+      <button>Verstuur</button>
+    </form>
+    <pre id="result"></pre>
+    <script>
+      document.getElementById("triageForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const body = {
+          complaint: document.getElementById("complaint").value,
+          postcode: document.getElementById("postcode").value
+        };
+        const res = await fetch("/api/triage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        document.getElementById("result").textContent =
+          JSON.stringify(data, null, 2);
+      };
+    </script>
+  </body>
+</html>

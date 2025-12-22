@@ -1,0 +1,7 @@
+{
+  "huisarts": [
+    { "keyword": "koorts", "advice": "Koorts langer dan 3 dagen? Bel huisarts." },
+    { "keyword": "hoest", "advice": "Hoest > 3 weken? Maak een afspraak." },
+    { "keyword": "buikpijn", "advice": "Buikpijn > 2 dagen? Bel huisarts." }
+  ]
+}
