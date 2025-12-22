@@ -1,37 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="utf-8" />
-    <title>Zorgassist AI</title>
-    <style>
-      body { font-family: Arial; max-width: 700px; margin: 2rem auto; }
-      textarea { width: 100%; height: 100px; margin-bottom: 1rem; }
-    </style>
-  </head>
-  <body>
-    <h1>Vind de juiste zorg</h1>
-    <form id="triageForm">
-      <textarea id="complaint" placeholder="Beschrijf kort je klacht..."></textarea>
-      <input type="text" id="postcode" placeholder="Postcode" /><br/>
-      <button>Verstuur</button>
-    </form>
-    <pre id="result"></pre>
-    <script>
-      document.getElementById("triageForm").onsubmit = async (e) => {
-        e.preventDefault();
-        const body = {
-          complaint: document.getElementById("complaint").value,
-          postcode: document.getElementById("postcode").value
-        };
-        const res = await fetch("/api/triage", {
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zorgassist AI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f8fa;
+      color: #222;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      color: #0066cc;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e9f5ff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vind de juiste zorg</h1>
+  <form id="zorgForm">
+    <label for="klacht">Wat is uw klacht?</label>
+    <textarea id="klacht" rows="3" placeholder="Bijv. hoofdpijn, koorts, pijn op de borst..."></textarea>
+
+    <label for="postcode">Uw postcode</label>
+    <input id="postcode" placeholder="Bijv. 1234 AB" />
+
+    <button type="submit">Verstuur</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    document.getElementById("zorgForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const klacht = document.getElementById("klacht").value.trim();
+      const postcode = document.getElementById("postcode").value.trim();
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "Bezig met analyseren... ⏳";
+
+      try {
+        const response = await fetch("/api/triage", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify({ klacht, postcode })
         });
-        const data = await res.json();
-        document.getElementById("result").textContent =
-          JSON.stringify(data, null, 2);
-      };
-    </script>
-  </body>
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultDiv.innerHTML = `<strong>Advies:</strong> ${data.result}`;
+        } else {
+          resultDiv.innerHTML = `<strong>Fout:</strong> ${data.error || "Onbekende fout"}`;
+        }
+      } catch (err) {
+        console.error(err);
+        resultDiv.innerHTML = "Er is iets misgegaan met de verbinding.";
+      }
+    });
+  </script>
+</body>
 </html>
