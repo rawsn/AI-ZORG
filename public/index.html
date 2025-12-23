@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zorgassist AI – Vind de juiste zorg</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zorgassist AI – Digitale zorgnavigator</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app-container">
-    <h1>🩺 Zorgassist AI</h1>
-    <div id="chat"></div>
-    <div id="input-area">
-      <textarea id="user-input" placeholder="Beschrijf kort uw klacht..." rows="2"></textarea>
-      <input type="text" id="postcode" placeholder="Uw postcode (bijv. 3511AB)">
-      <button id="start-btn">Start</button>
+    <h1>Zorgassist AI</h1>
+    <p class="intro">Uw digitale wegwijzer naar de juiste zorg volgens Nederlandse richtlijnen.</p>
+
+    <div id="triage">
+      <div id="vraag"></div>
+      <div id="antwoorden"></div>
+      <div id="resultaat" class="result"></div>
     </div>
   </div>
 
