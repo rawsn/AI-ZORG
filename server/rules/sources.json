@@ -1,0 +1,66 @@
+{
+  "NHG": {
+    "naam": "Nederlands Huisartsen Genootschap",
+    "domein": "huisartsenzorg",
+    "url": "https://richtlijnen.nhg.org/",
+    "type": "klinische richtlijn",
+    "beschrijving": "NHG-standaarden voor eerstelijnszorg en triage, gebruikt door huisartsen en doktersassistenten.",
+    "update": "2024"
+  },
+  "NTS": {
+    "naam": "Nederlands Triage Systeem",
+    "domein": "spoed & urgentie",
+    "url": "https://www.nts.nl/",
+    "type": "triageprotocol",
+    "beschrijving": "Bepaalt urgentieniveau (U1-U5) bij medische hulpvragen.",
+    "update": "2023"
+  },
+  "Thuisarts": {
+    "naam": "Thuisarts.nl",
+    "domein": "zelfzorg",
+    "url": "https://www.thuisarts.nl/",
+    "type": "publiek advies",
+    "beschrijving": "Publieke informatie over zelfzorg en eerste klachten, ontwikkeld door NHG.",
+    "update": "2024"
+  },
+  "RIVM": {
+    "naam": "Rijksinstituut voor Volksgezondheid en Milieu",
+    "domein": "publieke zorg & infectieziekten",
+    "url": "https://www.rivm.nl/",
+    "type": "publieke richtlijn",
+    "beschrijving": "Landelijke informatie over infectieziekten, vaccinatie en GGD-richtlijnen.",
+    "update": "2024"
+  },
+  "KNMG": {
+    "naam": "Koninklijke Nederlandsche Maatschappij tot bevordering der Geneeskunst",
+    "domein": "juridisch & ethisch kader",
+    "url": "https://www.knmg.nl/",
+    "type": "juridische richtlijn",
+    "beschrijving": "Regels over professionele verantwoordelijkheid, patiëntveiligheid en AVG-naleving.",
+    "update": "2024"
+  },
+  "VMS": {
+    "naam": "Federatie Medisch Specialisten",
+    "domein": "tweedelijnszorg",
+    "url": "https://richtlijnendatabase.nl/",
+    "type": "medische richtlijn",
+    "beschrijving": "Landelijke richtlijnen voor specialisten in de tweede lijn.",
+    "update": "2024"
+  },
+  "Verpleegkunde": {
+    "naam": "Verpleegkundige en acute zorgprotocollen (V&VN)",
+    "domein": "acute & verpleegkundige zorg",
+    "url": "https://venvn.nl/",
+    "type": "zorgprotocol",
+    "beschrijving": "Verpleegkundige en acute zorgprotocollen van de beroepsvereniging V&VN.",
+    "update": "2024"
+  },
+  "Rijksoverheid": {
+    "naam": "Rijksoverheid - Zorgverzekeringswet & Zorgstructuur",
+    "domein": "zorgfinanciering & structuur",
+    "url": "https://www.rijksoverheid.nl/onderwerpen/zorgverzekering",
+    "type": "regelgeving",
+    "beschrijving": "Bepaalt de verdeling van eerstelijns-, tweedelijns- en spoedzorg in Nederland.",
+    "update": "2024"
+  }
+}
