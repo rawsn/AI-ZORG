@@ -1,7 +1,7 @@
 {
   "name": "zorgassist-ai",
   "version": "1.0.0",
-  "description": "Zorgassist AI - Digitale zorgnavigator die mensen helpt de juiste zorg te vinden volgens de Nederlandse zorgregels.",
+  "description": "Zorgassist AI - Digitale zorgnavigator volgens Nederlandse richtlijnen.",
   "type": "module",
   "main": "server.js",
   "scripts": {
@@ -21,6 +21,5 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "author": "Zorgassist AI Team",
   "license": "MIT"
 }
