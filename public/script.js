@@ -1,32 +1,36 @@
-let stap = 0;
-const vraagEl = document.getElementById("vraag");
-const adviesEl = document.getElementById("advies");
-const buttonsEl = document.getElementById("buttons");
+let antwoorden = [];
 
-async function volgendeVraag(antwoord) {
+async function stuurAntwoord(tekst) {
+  antwoorden.push(tekst);
   const res = await fetch("/api/triageflow", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ stap, antwoord })
+    body: JSON.stringify({ antwoorden })
   });
-
   const data = await res.json();
-  console.log(data);
+
+  const vraagEl = document.getElementById("vraag");
+  const adviesEl = document.getElementById("advies");
 
   if (data.vraag) {
     vraagEl.innerText = data.vraag;
     adviesEl.innerText = "";
-    buttonsEl.classList.remove("hidden");
-    stap++;
   } else if (data.advies) {
     vraagEl.innerText = "";
-    adviesEl.innerHTML = `<strong>Advies:</strong> ${data.advies}`;
-    buttonsEl.classList.add("hidden");
+    adviesEl.innerHTML = `<strong>Advies:</strong> ${data.advies}<br><small>Bron: ${data.bron}</small>`;
   }
 }
 
-document.getElementById("ja").addEventListener("click", () => volgendeVraag("Ja"));
-document.getElementById("nee").addEventListener("click", () => volgendeVraag("Nee"));
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("invoer").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const tekst = e.target.value.trim();
+      if (tekst) {
+        stuurAntwoord(tekst);
+        e.target.value = "";
+      }
+    }
+  });
 
-// start
-volgendeVraag();
+  document.getElementById("vraag").innerText = "Wat is uw klacht?";
+});
