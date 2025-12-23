@@ -1,0 +1,10 @@
+{
+  "koorts": {
+    "advies": "Neem contact op met de huisarts bij koorts > 39°C, benauwdheid of verwardheid.",
+    "bron": "NHG-Standaard Koorts bij volwassenen"
+  },
+  "keelpijn": {
+    "advies": "Huisartsbezoek bij slikproblemen, kortademigheid of > 1 week klachten.",
+    "bron": "NHG-Standaard Keelpijn"
+  }
+}
