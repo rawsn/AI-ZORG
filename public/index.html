@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zorgassist AI</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Zorgassist AI</h1>
-    <p>Uw digitale wegwijzer naar de juiste zorg volgens Nederlandse richtlijnen.</p>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h1>🤖 Zorgassist AI</h1>
+      <p>Uw digitale wegwijzer naar de juiste zorg volgens Nederlandse richtlijnen.</p>
+    </div>
 
-    <div id="chatbox">
-      <div id="vraag"></div>
-      <div id="buttons" class="hidden">
-        <button id="ja">Ja</button>
-        <button id="nee">Nee</button>
-      </div>
-      <div id="advies"></div>
+    <div id="chat-window" class="chat-window"></div>
+
+    <div class="input-container">
+      <input id="invoer" type="text" placeholder="Beschrijf uw klacht..." autofocus />
+      <button id="send">Verstuur</button>
     </div>
   </div>
 
