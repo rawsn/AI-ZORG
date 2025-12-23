@@ -10,3 +10,4 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.listen(3000, () => console.log("✅ Server draait op poort 3000"));
