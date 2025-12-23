@@ -1,33 +1,26 @@
 <!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zorgassist AI – Vind de juiste zorg</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app">
-      <h1>Zorgassist AI</h1>
-      <p>
-        Uw digitale wegwijzer naar de juiste zorg volgens Nederlandse
-        richtlijnen.
-      </p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zorgassist AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Zorgassist AI</h1>
+    <p>Uw digitale wegwijzer naar de juiste zorg volgens Nederlandse richtlijnen.</p>
 
-      <div id="vraag" class="vraag"></div>
-      <div id="buttons" class="buttons"></div>
-      <div id="resultaat" class="resultaat"></div>
-
-      <footer>
-        <p class="disclaimer">
-          <strong>Let op:</strong> Zorgassist AI geeft géén medisch advies.
-          Deze toepassing helpt alleen bij het vinden van de juiste route binnen
-          de zorg, op basis van richtlijnen van NHG, NTS, Thuisarts.nl, RIVM en
-          KNMG.
-        </p>
-      </footer>
+    <div id="chatbox">
+      <div id="vraag"></div>
+      <div id="buttons" class="hidden">
+        <button id="ja">Ja</button>
+        <button id="nee">Nee</button>
+      </div>
+      <div id="advies"></div>
     </div>
+  </div>
 
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>
